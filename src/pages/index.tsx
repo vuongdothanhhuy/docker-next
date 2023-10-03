@@ -2,9 +2,10 @@ import Header from "@/components/header";
 import Main from "@/components/main";
 import {NextRequest, NextResponse} from "next/server";
 import {useState} from "react";
+import {getCookie, hasCookie} from "cookies-next";
 
-export default function Home({isLogin}: any) {
-    const [currUser, setCurrUser] = useState()
+export default function Home({isLogin, user}: any) {
+    const [currUser, setCurrUser] = useState(user)
     const [isAuth, setIsAuth] = useState(isLogin)
     const [isFormShare, setIsFormShare] = useState(false)
 
@@ -21,7 +22,8 @@ export default function Home({isLogin}: any) {
 export const getServerSideProps = async ({req, res}: { req: NextRequest, res: NextResponse }) => {
     return {
         props: {
-            isLogin: req.cookies.hasOwnProperty('login_token')
+            isLogin: hasCookie('login_token', {req, res}),
+            user: JSON.parse(getCookie('login_token', {req, res}) as string)
         }, // Will be passed to the page component as props
     }
 }
