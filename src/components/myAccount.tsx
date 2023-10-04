@@ -1,5 +1,6 @@
 type MyAccountProps = {
     currUser: Object,
+    isAuth: boolean,
     setIsAuth: Function,
     setIsFormShare: Function,
     setCurrUser: Function,
@@ -8,12 +9,13 @@ type MyAccountProps = {
 /**
  * My Account component.
  * @param currUser
+ * @param isAuth
  * @param setIsAuth
  * @param setIsFormShare
  * @param setCurrUser
  * @constructor
  */
-const MyAccount = ({currUser, setIsAuth, setIsFormShare, setCurrUser}: MyAccountProps) => {
+const MyAccount = ({currUser, isAuth, setIsAuth, setIsFormShare, setCurrUser}: MyAccountProps) => {
     const logout = async () => {
         const req = await fetch('/api/logout', {
             method: 'POST',
@@ -36,8 +38,8 @@ const MyAccount = ({currUser, setIsAuth, setIsFormShare, setCurrUser}: MyAccount
         setIsFormShare(true)
     }
 
-    return (currUser &&
-        <div className="my-account-wrapper">
+    if (currUser && isAuth) {
+        return (<div className="my-account-wrapper" data-testid="myaccount-component">
             <div className="flex-1 flex flex-col md:flex-row gap-4 md:gap-2 items-center">
                 <div className="w-full flex-auto text-right">
                     {/*@ts-ignore*/}
@@ -52,14 +54,16 @@ const MyAccount = ({currUser, setIsAuth, setIsFormShare, setCurrUser}: MyAccount
                 </div>
                 <div className="flex-auto">
                     <button type="button"
+                            data-testid='logout-button'
                             onClick={logout}
                             className="w-max">
                         Logout
                     </button>
                 </div>
             </div>
-        </div>
-    )
+        </div>)
+    }
+    return null
 }
 
 export default MyAccount

@@ -27,7 +27,8 @@ const Header = ({
                     setIsFormShare
                 }: HeaderProps) => {
     return (
-        <header className="flex flex-col md:flex-row justify-between gap-3 items-center border-b-2 pb-4">
+        <header className="flex flex-col md:flex-row justify-between gap-3 items-center border-b-2 pb-4"
+                data-testid="header-component">
             <div className="logo-wrapper md:basis-1/3 flex-auto">
                 <svg aria-label="Next.js logotype" height="68" role="img" viewBox="0 0 394 79" width="339">
                     <path d="M261.919 0.0330722H330.547V12.7H303.323V79.339H289.71V12.7H261.919V0.0330722Z"
@@ -55,15 +56,16 @@ const Header = ({
                 </svg>
             </div>
             <div className="my-account-wrapper flex-auto">
-                {isAuth && currUser ?
+                {isAuth && currUser &&
                     <MyAccount currUser={currUser}
+                               isAuth={isAuth}
                                setIsAuth={setIsAuth}
                                setIsFormShare={setIsFormShare}
                                setCurrUser={setCurrUser}/>
-                    :
-                    <Login
-                        setCurrUser={setCurrUser}
-                        setIsAuth={setIsAuth}/>}
+                }
+                {(!isAuth || !currUser) && <Login
+                    setCurrUser={setCurrUser}
+                    setIsAuth={setIsAuth}/>}
             </div>
         </header>
     )

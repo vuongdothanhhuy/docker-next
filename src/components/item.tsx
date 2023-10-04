@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 type ItemProps = {
     url: string,
     title: string,
@@ -21,12 +23,17 @@ const Item = ({
                   description
               }: ItemProps) => {
     return (
-        <div className="item-wrapper flex flex-col md:flex-row justify-center items-center gap-8">
+        <div className="item-wrapper flex flex-col md:flex-row justify-center items-center gap-8"
+             data-testid='item-component'>
             <div className="preview-wrapper flex-auto basis-1/3">
-                {/* Better to use Next/Image here */}
-                <img src={`https://img.youtube.com/vi/${url}/hqdefault.jpg`} alt=""/>
+                <Image
+                    src={`https://img.youtube.com/vi/${url}/hqdefault.jpg?randomhash=${Math.random()}`}
+                    alt="video thumbnail"
+                    width={300}
+                    height={150}
+                />
             </div>
-            <div className="description-wrapper basis-2/3">
+            <div className="description-wrapper basis-2/3" data-testid='item-component-desc'>
                 <div className="font-bold text-red-500">{title}</div>
                 <div>Shared by {shareBy}</div>
                 <div>

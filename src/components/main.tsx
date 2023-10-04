@@ -33,7 +33,7 @@ const Main = ({
     }: any = useFetch('item')
 
     return (
-        <div className="main-wrapper mt-4 flex flex-col md:w-1/2 gap-4 mx-auto">
+        <div className="main-wrapper mt-4 flex flex-col md:w-1/2 gap-4 mx-auto" data-testid="main-component">
             {!isLoading && !error && !isFormShare &&
                 items.map((item: any, index: any) => {
                     // Yes, use index as key is bad, but for the purpose of this demo, we think it's okay.
@@ -41,7 +41,7 @@ const Main = ({
                 })
             }
 
-            {isFormShare && <Share isAuth={isAuth} setIsFormShare={setIsFormShare} currUser={currUser}/>}
+            {isFormShare && isAuth && <Share isAuth={isAuth} setIsFormShare={setIsFormShare} currUser={currUser}/>}
         </div>
     )
 }
