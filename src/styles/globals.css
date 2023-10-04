@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/**
+    For the sake of simplicity, a global styling is applied for button, as seen here.
+    In real life, it is suggested to split into different files for different elements and then import all in here.
+ */
+
 button:hover {
     @apply cursor-pointer;
 }

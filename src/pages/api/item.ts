@@ -1,13 +1,11 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type {NextApiRequest, NextApiResponse} from 'next'
-import {PrismaClient} from '@prisma/client'
 import ytdl from "ytdl-core";
-
-const prisma = new PrismaClient()
+import prisma from "@/helper/prisma";
 
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse<any>
+    res: NextApiResponse
 ) {
     switch (req.method) {
         case 'GET': {
@@ -32,12 +30,8 @@ export default async function handler(
         }
         case 'PUT': {
             const {
-                title,
                 url,
                 shareBy,
-                like,
-                dislike,
-                description,
             } = req.body
             const {urlParsed, titleParsed, descriptionParsed} = await ytdl.getBasicInfo(url).then(info => {
                 return {urlParsed: info.videoDetails.videoId, titleParsed: info.videoDetails.title, descriptionParsed: info.videoDetails.description?.substring(0, 255)}
@@ -66,7 +60,7 @@ export default async function handler(
             return res.status(201).json(result)
         }
         default: {
-            return res.status(400)
+            return res.status(400).json({})
         }
     }
 }

@@ -1,3 +1,7 @@
+/**
+ * This file is used to seed some sample data to the database when initialized, in case the db is empty.
+ */
+
 import {PrismaClient} from '@prisma/client'
 
 const prisma = new PrismaClient()
@@ -8,7 +12,7 @@ async function main() {
         update: {},
         create: {
             email: 'alice@prisma.io',
-            password: 'fc5e038d38a57032085441e7fe7010b0', //helloworld
+            password: 'fc5e038d38a57032085441e7fe7010b0', // MD5 hash of the string password "helloworld"
         },
     })
     const item1 = await prisma.item.upsert({

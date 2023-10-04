@@ -1,19 +1,16 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type {NextApiRequest, NextApiResponse} from 'next'
-import {PrismaClient} from '@prisma/client'
 import crypto from 'crypto'
-
-const prisma = new PrismaClient()
+import prisma from "@/helper/prisma";
 
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse<any>
+    res: NextApiResponse
 ) {
     switch (req.method) {
         case 'POST': {
             const {email, password} = req.body
             if (email && password) {
-                //
                 const result = await prisma.user.create({
                     data: {
                         email: email,
@@ -23,11 +20,10 @@ export default async function handler(
                 return res.status(201).json(result)
             }
 
-            return res.status(400)
+            return res.status(400).json({})
         }
-        case 'GET':
         default: {
-            res.status(400)
+            return res.status(400).json({})
         }
     }
 }

@@ -1,7 +1,21 @@
 import {mutate} from "swr";
 import {useState} from "react";
 
-const Share = ({setIsFormShare, isAuth, currUser}: any) => {
+type ShareProps = {
+    setIsFormShare: Function,
+    isAuth: boolean,
+    currUser: Object,
+}
+
+/**
+ * Share component.
+ *
+ * @param setIsFormShare
+ * @param isAuth
+ * @param currUser
+ * @constructor
+ */
+const Share = ({setIsFormShare, isAuth, currUser}: ShareProps) => {
     const [url, setUrl] = useState('')
 
     const share = async () => {
@@ -15,18 +29,17 @@ const Share = ({setIsFormShare, isAuth, currUser}: any) => {
             },
             body: JSON.stringify({
                 url: url,
+                // @ts-ignore
                 shareBy: currUser.email
             })
         })
 
         if (req.ok) {
             setIsFormShare(false)
-            mutate('/api/item')
+            await mutate('/api/item')
         } else {
             alert('Cannot share!')
         }
-
-
     }
 
     return (

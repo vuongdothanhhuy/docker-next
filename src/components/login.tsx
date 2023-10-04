@@ -1,9 +1,22 @@
 import {useState} from "react";
 
-const Login = ({setCurrUser, setIsAuth}: any) => {
+type LoginProps = {
+    setCurrUser: Function,
+    setIsAuth: Function,
+}
+
+/**
+ * Login component
+ *
+ * @param setCurrUser
+ * @param setIsAuth
+ * @constructor
+ */
+const Login = ({setCurrUser, setIsAuth}: LoginProps) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    // login() call when click on the button.
     const login = async () => {
         const req = await fetch('/api/login', {
             method: 'POST',
@@ -16,10 +29,18 @@ const Login = ({setCurrUser, setIsAuth}: any) => {
         const reqValue = await req.json()
 
         if (req.ok) {
+            /**
+             * To keep everything simple in a constraint timeline, some decisions have been made:
+             *  - When the API return ok, it means account is registered/login, and session is generated on BE.
+             *  - On FE, we store the whole returned User obj to be used later. In real life, this is discouraged,
+             *      and it must be implemented in a more properly way.
+             *  - We have an "isAuth" bool var to tell whether we're logged in or not. In real life,
+             *      it can be an SWR that constantly fetch status from the server, better!
+             */
             setCurrUser(reqValue)
             setIsAuth(true)
         } else {
-            alert('Cannot login!')
+            alert('Cannot login/register!')
         }
     }
 
@@ -47,7 +68,7 @@ const Login = ({setCurrUser, setIsAuth}: any) => {
                 <div className="w-max-fit">
                     <button type="button"
                             onClick={login}
-                            className="p-1 px-2 bg-blue-500 w-full text-gray-800 border border-gray-200 rounded text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+                            className="p-1 px-2 bg-blue-500 w-full text-gray-800 border border-gray-200 rounded hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm sm:w-auto py-2.5 text-center">
                         Login/Register
                     </button>
                 </div>

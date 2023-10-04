@@ -1,7 +1,31 @@
 import MyAccount from "@/components/myAccount";
 import Login from "@/components/login";
 
-const Header = ({isAuth, currUser, setCurrUser, setIsAuth, setIsFormShare}: any) => {
+type HeaderProps = {
+    isAuth: boolean,
+    currUser: Object,
+    setCurrUser: Function,
+    setIsAuth: Function,
+    setIsFormShare: Function,
+}
+
+/**
+ * This is the Header component. It houses the Image to the left and the component to login/register/myaccount to right.
+ *
+ * @param isAuth
+ * @param currUser
+ * @param setCurrUser
+ * @param setIsAuth
+ * @param setIsFormShare
+ * @constructor
+ */
+const Header = ({
+                    isAuth,
+                    currUser,
+                    setCurrUser,
+                    setIsAuth,
+                    setIsFormShare
+                }: HeaderProps) => {
     return (
         <header className="flex flex-col md:flex-row justify-between gap-3 items-center border-b-2 pb-4">
             <div className="logo-wrapper md:basis-1/3 flex-auto">
@@ -32,8 +56,14 @@ const Header = ({isAuth, currUser, setCurrUser, setIsAuth, setIsFormShare}: any)
             </div>
             <div className="my-account-wrapper flex-auto">
                 {isAuth && currUser ?
-                    <MyAccount currUser={currUser} setIsAuth={setIsAuth} setIsFormShare={setIsFormShare}/> :
-                    <Login setCurrUser={setCurrUser} setIsAuth={setIsAuth}/>}
+                    <MyAccount currUser={currUser}
+                               setIsAuth={setIsAuth}
+                               setIsFormShare={setIsFormShare}
+                               setCurrUser={setCurrUser}/>
+                    :
+                    <Login
+                        setCurrUser={setCurrUser}
+                        setIsAuth={setIsAuth}/>}
             </div>
         </header>
     )

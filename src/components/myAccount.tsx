@@ -1,4 +1,19 @@
-const MyAccount = ({currUser, setIsAuth, setIsFormShare}: any) => {
+type MyAccountProps = {
+    currUser: Object,
+    setIsAuth: Function,
+    setIsFormShare: Function,
+    setCurrUser: Function,
+}
+
+/**
+ * My Account component.
+ * @param currUser
+ * @param setIsAuth
+ * @param setIsFormShare
+ * @param setCurrUser
+ * @constructor
+ */
+const MyAccount = ({currUser, setIsAuth, setIsFormShare, setCurrUser}: MyAccountProps) => {
     const logout = async () => {
         const req = await fetch('/api/logout', {
             method: 'POST',
@@ -10,7 +25,7 @@ const MyAccount = ({currUser, setIsAuth, setIsFormShare}: any) => {
         })
 
         if (req.ok) {
-            // setCurrUser(null)
+            setCurrUser(null)
             setIsAuth(false)
         } else {
             alert('Cannot logout!')
@@ -25,6 +40,7 @@ const MyAccount = ({currUser, setIsAuth, setIsFormShare}: any) => {
         <div className="my-account-wrapper">
             <div className="flex-1 flex flex-col md:flex-row gap-4 md:gap-2 items-center">
                 <div className="w-full flex-auto text-right">
+                    {/*@ts-ignore*/}
                     Welcome {currUser.email}
                 </div>
                 <div className="flex-auto">
