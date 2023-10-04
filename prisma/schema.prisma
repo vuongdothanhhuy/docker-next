@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// BEGIN CONFIGURATION
+// Configuration for Prisma to connect to Vercel PostgreSQL. Env vars are from the .env file.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+// END OF CONFIGURATION
+
+// BEGIN MODEL DECLARATION
+
+// To keep things simple for this demo, we only declare 2 models: User, and Item. Relationship is Many - Many.
+//   Prisma will automagically create one more table to map this M-M relation.
+
+model User {
+    id          Int @default(autoincrement()) @id
+    email       String @unique
+    password    String
+    items       Item[]
+}
+
+model Item {
+    id      Int @default(autoincrement()) @id
+    title   String
+    url     String @unique
+    shareBy User[]
+    like    Int @default(0)
+    dislike Int @default(0)
+    description String
+}
+
+// END MODEL DECLARATION
