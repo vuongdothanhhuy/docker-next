@@ -26,7 +26,7 @@ export default function Home({isLogin, user}: HomeProps) {
     const [isFormShare, setIsFormShare] = useState(false)
 
     return (
-        <main className="container mx-auto m-4">
+        <main className="container mx-auto m-4" data-testid="home-component">
             <Header isAuth={isAuth} setIsAuth={setIsAuth} currUser={currUser} setCurrUser={setCurrUser}
                     setIsFormShare={setIsFormShare}/>
             <Main isFormShare={isFormShare} setIsFormShare={setIsFormShare} isAuth={isAuth} currUser={currUser}/>
@@ -44,7 +44,7 @@ export const getServerSideProps = async ({req, res}: { req: NextRequest, res: Ne
     return {
         props: {
             isLogin: hasCookie('login_token', {req, res}),
-            user: JSON.parse(getCookie('login_token', {req, res}) as string)
+            user: JSON.parse((getCookie('login_token', {req, res}) || null) as string) || {}
         }, // Will be passed to the page component as props
     }
 }
