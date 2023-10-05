@@ -33,31 +33,35 @@ export default async function handler(
                 url,
                 shareBy,
             } = req.body
-            const {urlParsed, titleParsed, descriptionParsed} = await ytdl.getBasicInfo(url).then(info => {
-                return {urlParsed: info.videoDetails.videoId, titleParsed: info.videoDetails.title, descriptionParsed: info.videoDetails.description?.substring(0, 255)}
-            })
 
-            const result = await prisma.item.upsert({
-                where: {
-                    // @ts-ignore
-                    url: urlParsed
-                },
-                update: {
-                    title: titleParsed,
-                    description: descriptionParsed,
-                },
-                create: {
-                    title: titleParsed,
-                    // @ts-ignore
-                    url: urlParsed,
-                    shareBy: {
-                        connect: [{email: shareBy}]
+            try {
+                const {urlParsed, titleParsed, descriptionParsed} = await ytdl.getBasicInfo(url).then(info => {
+                    return {urlParsed: info.videoDetails.videoId, titleParsed: info.videoDetails.title, descriptionParsed: info.videoDetails.description?.substring(0, 255)}
+                })
+                const result = await prisma.item.upsert({
+                    where: {
+                        // @ts-ignore
+                        url: urlParsed
                     },
-                    // @ts-ignore
-                    description: descriptionParsed,
-                }
-            })
-            return res.status(201).json(result)
+                    update: {
+                        title: titleParsed,
+                        description: descriptionParsed,
+                    },
+                    create: {
+                        title: titleParsed,
+                        // @ts-ignore
+                        url: urlParsed,
+                        shareBy: {
+                            connect: [{email: shareBy}]
+                        },
+                        // @ts-ignore
+                        description: descriptionParsed,
+                    }
+                })
+                return res.status(201).json(result)
+            } catch (e) {
+                return res.status(400).json(e)
+            }
         }
         default: {
             return res.status(400).json({})
