@@ -13,7 +13,6 @@ describe('/api/login', () => {
                                                                                     // "helloworld"
                                   });
 
-
         const {req, res} = createMocks({
                                            method: 'POST',
                                            body: {
@@ -23,8 +22,6 @@ describe('/api/login', () => {
                                        })
 
         const response: MockResponse<any> = await handler(req, res)
-
-        console.log('asdf', response._getJSONData())
 
         expect(response.statusCode).toBe(201)
         expect(await response._getJSONData())
@@ -52,11 +49,8 @@ describe('/api/login', () => {
     })
 
     it('login not ok - wrong http method', async () => {
-        const prisma = {
-            user: {
-                firstFind: jest.fn(),
-            },
-        }
+        prisma.user.findFirst = jest
+            .fn().mockReturnValue(null);
         const {req, res} = createMocks({
                                            method: 'GET',
                                        }, {})
