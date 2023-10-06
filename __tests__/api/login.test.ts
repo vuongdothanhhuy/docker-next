@@ -35,11 +35,9 @@ describe('/api/login', () => {
     })
 
     it('login not ok - wrong cred', async () => {
-        const prisma = {
-            user: {
-                firstFind: jest.fn(),
-            },
-        }
+        prisma.user.findFirst = jest
+            .fn().mockReturnValue(null);
+
         const {req, res} = createMocks({
                                            method: 'POST',
                                            body: {
